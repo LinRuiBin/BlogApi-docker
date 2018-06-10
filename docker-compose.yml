@@ -1,0 +1,40 @@
+version: '3'
+services:
+  
+    nginx:
+        container_name: nginx-container        
+        build: ./nginx
+        restart: always
+        ports:
+        - "8888:80" 
+        volumes:        
+        - api_data:/docker_api        
+        - ./log:/var/log/nginx              
+        depends_on:
+        - api
+        
+    api:
+        container_name: api-container
+        build: ./RestApi        
+        restart: always
+        # command: uwsgi  --emperor uwsgi.ini         
+        command: uwsgi --ini uwsgi.ini         
+        ports:
+        - "8002:8000"
+        volumes:
+        - api_data:/docker_api 
+       
+    jenkins:
+        build: ./jenkins
+        restart: always         
+        ports:
+            - "8090:8080"
+            - "50000:50000"
+        volumes:            
+            - jenkins_data:/var/jenkins_home   
+        
+
+volumes:
+    api_data:
+    pgdata:
+    jenkins_data:
