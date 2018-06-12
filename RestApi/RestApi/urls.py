@@ -30,7 +30,7 @@ router = DefaultRouter()
 router.register(r'goods',GoodsListViewSet)
 router.register(r'homeArticles',HomeArticlesListViewSet)
 # 商品分类
-router.register(r'fffcategorys',CategoryViewSet)
+router.register(r'testcategorys',CategoryViewSet)
 router.register(r'code', SmsCodeViewset, base_name="code")
 router.register(r'users', UserViewset, base_name="users")
 router.register(r'articles',ArticlesListViewSet)
