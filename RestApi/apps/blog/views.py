@@ -8,6 +8,11 @@ from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from .filters import ArticleFilter
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.authentication import SessionAuthentication
+from rest_framework import permissions
+from rest_framework import authentication
 # Create your views here.
 
 class ArticlesPagination(PageNumberPagination):
@@ -36,6 +41,12 @@ class ArticlesListViewSet(mixins.ListModelMixin,mixins.CreateModelMixin,mixins.R
         else:
             return ArtilcleDetailSerializer
 
+    def get_permissions(self):
+        if self.action == "create":
+            return [permissions.IsAuthenticated()]
+        else:
+            return []
+
 
 class HomeArticlesListViewSet(mixins.ListModelMixin,viewsets.GenericViewSet):
     """
@@ -43,6 +54,12 @@ class HomeArticlesListViewSet(mixins.ListModelMixin,viewsets.GenericViewSet):
     """
     queryset = HomeData.objects.all()
     serializer_class = HomeDataSerializer
+
+    def get_permissions(self):
+        if self.action == "create":
+            return [permissions.IsAuthenticated()]
+        else:
+            return []
 
 
 class AllLabelsViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
@@ -63,6 +80,8 @@ class BlogImageUploadSet(mixins.CreateModelMixin,viewsets.GenericViewSet):
     """
     首页文章
     """
+    permission_classes =[IsAuthenticated, ]
+    authentication_classes = [JSONWebTokenAuthentication,]
     queryset = BlogImage.objects.all()
     serializer_class = BlogImageSerializer
 

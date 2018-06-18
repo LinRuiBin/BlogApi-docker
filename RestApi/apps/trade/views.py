@@ -1,14 +1,13 @@
 import time
 from datetime import datetime
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework import mixins
 from django.shortcuts import redirect
 
 from .serializers import ShopCartSerializer , OrderDetailSerializer , ShopCartDetailSerializer , OrderSerializer
-from Utils.permissions import IsOwnerOrReadOnly
 from .models import ShoppingCart , OrderInfo , OrderGoods
 
 
@@ -22,7 +21,7 @@ class ShoppingCartViewset(viewsets.ModelViewSet):
     delete：
         删除购物记录
     """
-    permission_classes = (IsAuthenticated , IsOwnerOrReadOnly)
+    permission_classes = (IsAuthenticated, IsAuthenticatedOrReadOnly)
     authentication_classes = (JSONWebTokenAuthentication , SessionAuthentication)
     serializer_class = ShopCartSerializer
     lookup_field = "goods_id"

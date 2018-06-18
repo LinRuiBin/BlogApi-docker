@@ -62,6 +62,7 @@ class HomeDataSerializer(serializers.ModelSerializer):
 
 
 class BlogImageSerializer(serializers.ModelSerializer):
+
     image = serializers.ImageField(max_length=None , allow_empty_file=False , use_url=True)
     class Meta:
         model = BlogImage
